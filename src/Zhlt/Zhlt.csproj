@@ -12,7 +12,7 @@
     <Description>Vluzacn's ZHLT v34 — Half-Life map compiler wrapper for .NET. Includes hlcsg, hlbsp, hlvis and hlrad for Windows x64.</Description>
     <Authors>Vluzacn</Authors>
     <PackageTags>half-life;bsp;map-compiler;zhlt;game-tools</PackageTags>
-    <!-- <PackageReadmeFile>README.md</PackageReadmeFile> -->
+    <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <!--
       De native EXEs worden NIET via SuppressDependenciesWhenPacking uitgesloten:
@@ -21,6 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <None Include="..\..\README.md" Pack="true" PackagePath="\" />
     <!--
       MSBuild targets-bestand.
       NuGet importeert automatisch build/{PackageId}.targets in elk project
