@@ -1,0 +1,19 @@
+<Project>
+
+  <!--
+    Collects the win-x64 native executables from the NuGet package cache.
+    The Copy task runs before Build so the EXEs land next to the output DLL.
+  -->
+  <ItemGroup>
+    <_ZhltNative Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\*.exe" />
+  </ItemGroup>
+
+  <Target Name="_ZhltCopyNativeAssets"
+          BeforeTargets="Build"
+          Condition="'@(_ZhltNative)' != ''">
+    <Copy SourceFiles="@(_ZhltNative)"
+          DestinationFolder="$(OutputPath)"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

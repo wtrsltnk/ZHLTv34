@@ -1,0 +1,20 @@
+# .NET build output
+bin/
+obj/
+nupkgs/
+
+# Native binaries (gegenereerd door CI, niet in source)
+src/Zhlt/runtimes/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# C++ build output
+zhlt-vluzacn/*/Release/
+zhlt-vluzacn/*/Release_x64/
+zhlt-vluzacn/*/release/
+zhlt-vluzacn/bin/

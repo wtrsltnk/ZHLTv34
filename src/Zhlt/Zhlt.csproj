@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+
+    <!-- NuGet metadata -->
+    <PackageId>Zhlt</PackageId>
+    <Version>34.0.0</Version>
+    <Description>Vluzacn's ZHLT v34 — Half-Life map compiler wrapper for .NET. Includes hlcsg, hlbsp, hlvis and hlrad for Windows x64.</Description>
+    <Authors>Vluzacn</Authors>
+    <PackageTags>half-life;bsp;map-compiler;zhlt;game-tools</PackageTags>
+    <!-- <PackageReadmeFile>README.md</PackageReadmeFile> -->
+
+    <!--
+      De native EXEs worden NIET via SuppressDependenciesWhenPacking uitgesloten:
+      ze zijn binaire assets, geen .NET-afhankelijkheden.
+    -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      MSBuild targets-bestand.
+      NuGet importeert automatisch build/{PackageId}.targets in elk project
+      dat dit pakket gebruikt.
+    -->
+    <None Include="build\Zhlt.targets"
+          Pack="true"
+          PackagePath="build\" />
+
+    <!--
+      Native Windows x64 executables.
+      In de source-tree zijn dit placeholders; de CI-pipeline plaatst
+      de gecompileerde EXEs hier vóór `dotnet pack`.
+    -->
+    <None Include="runtimes\win-x64\native\*.exe"
+          Pack="true"
+          PackagePath="runtimes\win-x64\native\"
+          CopyToOutputDirectory="Never"
+          Visible="false" />
+  </ItemGroup>
+
+</Project>

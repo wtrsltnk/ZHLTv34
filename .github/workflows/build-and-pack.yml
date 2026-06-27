@@ -1,0 +1,82 @@
+name: Build and Pack
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-pack:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build C++ (Release x64)
+        working-directory: zhlt-vluzacn
+        run: msbuild zhlt.sln /p:Configuration=Release /p:Platform=x64 /m
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.x'
+
+      - name: Copy native binaries to pack location
+        shell: pwsh
+        run: |
+          $dest = "src\Zhlt\runtimes\win-x64\native"
+          New-Item -ItemType Directory -Force -Path $dest | Out-Null
+          foreach ($tool in @("hlcsg", "hlbsp", "hlvis", "hlrad")) {
+            Copy-Item "zhlt-vluzacn\$tool\Release_x64\$tool.exe" "$dest\$tool.exe"
+          }
+
+      - name: Determine version
+        id: version
+        shell: pwsh
+        run: |
+          if ("${{ github.ref }}" -match "^refs/tags/v(.+)$") {
+            $ver = $Matches[1]
+          } else {
+            $ver = "34.0.0-dev.${{ github.run_number }}"
+          }
+          "VERSION=$ver" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Build and pack
+        run: dotnet pack src\Zhlt\Zhlt.csproj -c Release -p:Version=${{ steps.version.outputs.VERSION }} -o nupkgs
+
+      - name: Upload nupkg artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nupkg
+          path: nupkgs\*.nupkg
+
+  publish:
+    needs: build-and-pack
+    runs-on: windows-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    environment: nuget-release        # optioneel: vereist handmatige goedkeuring
+
+    steps:
+      - name: Download nupkg
+        uses: actions/download-artifact@v4
+        with:
+          name: nupkg
+          path: nupkgs
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.x'
+
+      - name: Push to NuGet.org
+        run: >
+          dotnet nuget push nupkgs\*.nupkg
+          --api-key ${{ secrets.NUGET_API_KEY }}
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate

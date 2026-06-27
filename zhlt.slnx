@@ -1,0 +1,10 @@
+<Solution>
+  <Project Path="src\Zhlt\Zhlt.csproj" />
+  <Folder Name="/Native Tools/">
+    <Project Path="zhlt-vluzacn\hlcsg\hlcsg.vcxproj" />
+    <Project Path="zhlt-vluzacn\hlbsp\hlbsp.vcxproj" />
+    <Project Path="zhlt-vluzacn\hlvis\hlvis.vcxproj" />
+    <Project Path="zhlt-vluzacn\hlrad\hlrad.vcxproj" />
+    <Project Path="zhlt-vluzacn\ripent\ripent.vcxproj" />
+  </Folder>
+</Solution>
