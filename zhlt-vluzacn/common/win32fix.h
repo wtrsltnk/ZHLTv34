@@ -16,7 +16,9 @@
 #define strncasecmp _strnicmp
 #define strcasecmp  _stricmp
 
+#if _MSC_VER < 1900
 #define snprintf  _snprintf
+#endif
 #if _MSC_VER < 1400 // AdamR: Ignore this definition in Visual Studio 2005 and later
 #define vsnprintf _vsnprintf
 #endif
