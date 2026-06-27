@@ -13,6 +13,7 @@
     <Authors>Vluzacn</Authors>
     <PackageTags>half-life;bsp;map-compiler;zhlt;game-tools</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
     <!--
       De native EXEs worden NIET via SuppressDependenciesWhenPacking uitgesloten:
@@ -22,6 +23,7 @@
 
   <ItemGroup>
 	  <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
     <!--
       MSBuild targets-bestand.
       NuGet importeert automatisch build/{PackageId}.targets in elk project
